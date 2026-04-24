@@ -1,0 +1,187 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Design tokens — CSS custom properties ─────────────────────────────────
+   Colours stored as space-separated RGB so Tailwind's opacity modifier works:
+     bg-primary/20  →  rgb(var(--color-primary) / 0.2)
+   Light overrides live on `html.light`.
+   ─────────────────────────────────────────────────────────────────────────── */
+@layer base {
+
+  /* ── Dark (default) ──────────────────────────────────────────────────────── */
+  :root {
+    /* Semantic colours — RGB triples */
+    --color-background:       7   7  15;
+    --color-surface:         13  13  26;
+    --color-surface-elevated:20  20  42;
+    --color-primary:          0 212 255;
+    --color-primary-light:   51 221 255;
+    --color-primary-dark:     0 159 192;
+    --color-accent:         124  58 237;
+    --color-accent-light:   168  85 247;
+    --color-accent-dark:     91  33 182;
+    --color-text:           240 244 255;
+    --color-text-muted:     136 153 180;
+    --color-text-subtle:     74  85 104;
+
+    /* Border — kept as full rgba so they can include alpha directly */
+    --border-default:    rgba(255,255,255,0.07);
+    --border-bright:     rgba(255,255,255,0.14);
+
+    /* Surface overlays (rgba, used in inline styles & panels) */
+    --surface-card:       rgba( 7,  7, 15, 0.80);
+    --surface-card-hi:    rgba( 7,  7, 15, 0.92);
+    --surface-card-el:    rgba(13, 13, 26, 0.80);
+    --surface-panel:      rgba( 7,  7, 15, 0.97);
+    --surface-overlay:    rgba( 7,  7, 15, 0.65);
+    --surface-hud:        rgba( 7,  7, 15, 0.92);
+    --surface-mobile-menu:rgba( 7,  7, 15, 0.98);
+    --surface-input:      rgba( 7,  7, 15, 0.70);
+    --surface-section-alt:rgba(13, 13, 26, 1.00);
+
+    /* Grid / dot patterns */
+    --grid-dot:  rgba(0,212,255,0.07);
+    --grid-line: rgba(0,212,255,0.04);
+
+    /* Scrollbar */
+    --scrollbar-track: #07070f;
+    --scrollbar-thumb: rgba(0,212,255,0.25);
+    --scrollbar-thumb-hover: rgba(0,212,255,0.45);
+
+    /* Transition speed for theme switch */
+    --theme-transition: 220ms;
+  }
+
+  /* ── Light ───────────────────────────────────────────────────────────────── */
+  html.light {
+    --color-background:      244 248 255;
+    --color-surface:         255 255 255;
+    --color-surface-elevated:232 240 255;
+    --color-primary:           0 153 204;
+    --color-primary-light:     0 180 230;
+    --color-primary-dark:      0 120 160;
+    --color-accent:          109  40 217;
+    --color-accent-light:    124  58 237;
+    --color-accent-dark:      91  33 182;
+    --color-text:             13  17  23;
+    --color-text-muted:       74  85 104;
+    --color-text-subtle:     156 163 175;
+
+    --border-default:    rgba(0,0,0,0.08);
+    --border-bright:     rgba(0,0,0,0.15);
+
+    --surface-card:       rgba(255,255,255,0.85);
+    --surface-card-hi:    rgba(255,255,255,0.95);
+    --surface-card-el:    rgba(255,255,255,0.90);
+    --surface-panel:      rgba(248,251,255,0.98);
+    --surface-overlay:    rgba( 10, 15, 40, 0.30);
+    --surface-hud:        rgba(255,255,255,0.92);
+    --surface-mobile-menu:rgba(248,251,255,0.98);
+    --surface-input:      rgba(255,255,255,0.80);
+    --surface-section-alt:rgba(240,245,255,1.00);
+
+    --grid-dot:  rgba(0,153,204,0.09);
+    --grid-line: rgba(0,153,204,0.06);
+
+    --scrollbar-track: #f4f8ff;
+    --scrollbar-thumb: rgba(0,153,204,0.25);
+    --scrollbar-thumb-hover: rgba(0,153,204,0.45);
+  }
+
+  /* ── Base resets ─────────────────────────────────────────────────────────── */
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Smooth colour transition when switching themes */
+  *,
+  *::before,
+  *::after {
+    transition:
+      background-color var(--theme-transition) ease,
+      border-color     var(--theme-transition) ease,
+      color            var(--theme-transition) ease;
+  }
+
+  /* Opt-out of transition for elements that should snap (e.g. animations) */
+  .no-theme-transition,
+  .no-theme-transition * {
+    transition: none !important;
+  }
+
+  body {
+    background-color: rgb(var(--color-background));
+    color:            rgb(var(--color-text));
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar       { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+  ::-webkit-scrollbar-thumb {
+    background:    var(--scrollbar-thumb);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+  :focus-visible {
+    outline:        2px solid rgb(var(--color-primary));
+    outline-offset: 3px;
+  }
+}
+
+/* ─── Component utilities ────────────────────────────────────────────────────── */
+@layer components {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+
+  .glass {
+    @apply backdrop-blur-md rounded-2xl;
+    background: rgb(var(--color-surface) / 0.05);
+    border: 1px solid var(--border-default);
+  }
+
+  /* Themed card — auto-adapts background + border */
+  .theme-card {
+    background:    var(--surface-card);
+    border:        1px solid var(--border-default);
+    backdrop-filter: blur(20px);
+  }
+
+  .theme-card-el {
+    background:    var(--surface-card-el);
+    border:        1px solid var(--border-default);
+    backdrop-filter: blur(20px);
+  }
+}
+
+/* ─── Glow utilities ─────────────────────────────────────────────────────────── */
+@layer utilities {
+  .glow-primary { box-shadow: 0 0 40px rgb(var(--color-primary) / 0.2); }
+  .glow-accent  { box-shadow: 0 0 40px rgb(var(--color-accent)  / 0.2); }
+}
+
+/* ─── GSAP initial states ────────────────────────────────────────────────────── */
+[data-gsap="fade-up"]   { opacity: 0; transform: translateY(32px); }
+[data-gsap="fade-in"]   { opacity: 0; }
+[data-gsap="fade-left"] { opacity: 0; transform: translateX(32px); }
+[data-gsap="scale-in"]  { opacity: 0; transform: scale(0.92); }
+
+/* ─── Light-mode specific overrides for components that can't use CSS vars ──── */
+
+/* Background sections that use bg-surface Tailwind class */
+html.light .bg-surface {
+  background-color: rgb(var(--color-surface)) !important;
+}
+html.light .bg-background {
+  background-color: rgb(var(--color-background)) !important;
+}
+
+/* Terminal section dark shell — keep mostly dark even in light mode
+   for the "code terminal" aesthetic, just lighten the outer wrapper */
+html.light .terminal-outer {
+  background: rgba(255,255,255,0.05);
+}

@@ -1,0 +1,56 @@
+/*
+ * Animation utility classes that complement GSAP + Framer Motion.
+ * Import in globals.css if you want them available globally,
+ * or in individual components as needed.
+ *
+ * These handle initial states so GSAP has a clean base to animate from,
+ * preventing flashes of unstyled content on load.
+ */
+
+/* ─── GSAP initial states ────────────────────────────────────────────────── */
+/* Applied to elements before GSAP runs. GSAP will override these on play. */
+
+.gsap-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.gsap-fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  will-change: transform, opacity;
+}
+
+.gsap-fade-left {
+  opacity: 0;
+  transform: translateX(40px);
+  will-change: transform, opacity;
+}
+
+.gsap-scale-in {
+  opacity: 0;
+  transform: scale(0.9);
+  will-change: transform, opacity;
+}
+
+/* ─── Clip-path reveals ───────────────────────────────────────────────────── */
+/* Used for text/image wipe-in effects via GSAP clipPath tweens */
+
+.clip-wipe {
+  clip-path: inset(0 100% 0 0);
+  will-change: clip-path;
+}
+
+.clip-wipe-bottom {
+  clip-path: inset(100% 0 0 0);
+  will-change: clip-path;
+}
+
+/* ─── Performance hints ───────────────────────────────────────────────────── */
+/* Apply to elements that will be animated to promote them to their own layer */
+
+.will-animate {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}

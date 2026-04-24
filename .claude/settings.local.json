@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(node -e ' *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/zenadrone-1000)",
+      "Bash(curl -s http://localhost:3001/zenadrone-1000)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(npx next *)",
+      "Bash(node -e \"try { const g = require\\('@gsap/react'\\); console.log\\('exports:', Object.keys\\(g\\)\\); } catch\\(e\\) { console.log\\('error:', e.message\\); }\")",
+      "Bash(sed -i \"s/fontSize: 'clamp\\(2\\\\.1rem, 4\\\\.8vw, 3\\\\.8rem\\)'/fontSize: 'clamp\\(2.4rem, 5.2vw, 4.2rem\\)'/g\" *.tsx)",
+      "Bash(sed -i \"s/fontSize: 'clamp\\(2\\\\.2rem, 5vw, 3\\\\.8rem\\)'/fontSize: 'clamp\\(2.5rem, 5.4vw, 4.2rem\\)'/g\" *.tsx)",
+      "Bash(sed -i \"s/fontSize: 'clamp\\(2\\\\.2rem, 5vw, 4rem\\)'/fontSize: 'clamp\\(2.5rem, 5.4vw, 4.4rem\\)'/g\" *.tsx)",
+      "Bash(sed -i \"s/fontSize: 'clamp\\(1\\\\.5rem, 2\\\\.5vw, 2rem\\)'/fontSize: 'clamp\\(1.75rem, 2.9vw, 2.3rem\\)'/g\" *.tsx)",
+      "Bash(sed -i \"s/fontSize: 'clamp\\(1\\\\.5rem, 2\\\\.8vw, 2\\\\.1rem\\)'/fontSize: 'clamp\\(1.75rem, 3.2vw, 2.4rem\\)'/g\" *.tsx)",
+      "Bash(npm --version)",
+      "Bash(curl *)"
+    ]
+  }
+}
