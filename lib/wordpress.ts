@@ -38,9 +38,9 @@ export interface WPPost {
 }
 
 // ─── Core fetch helper ─────────────────────────────────────────────────────────
-async function fetchWPAPI<T = any>(
+async function fetchWPAPI<T>(
   query: string,
-  { variables }: { variables?: Record<string, any> } = {}
+  { variables }: { variables?: Record<string, unknown> } = {}
 ): Promise<T> {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL
   if (!WP_URL) {
@@ -54,7 +54,8 @@ async function fetchWPAPI<T = any>(
     next: { revalidate: 60 },   // ISR — rebuild every 60 seconds
   })
 
-  const json = await res.json()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const json = await res.json() as any
   if (json.errors) {
     console.error('[WP GraphQL] Errors:', JSON.stringify(json.errors, null, 2))
     throw new Error('Failed to fetch from WordPress API')
@@ -79,6 +80,7 @@ function formatDate(iso: string): string {
 }
 
 // ─── Map a raw WP GraphQL node into our WPPost shape ───────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mapPost(node: any): WPPost {
   const cat      = node.categories?.nodes?.[0]
   const catSlug  = cat?.slug ?? 'uncategorized'
@@ -86,6 +88,7 @@ function mapPost(node: any): WPPost {
   const catColor = CATEGORY_COLORS[catSlug] ?? DEFAULT_COLOR
 
   const featImg  = node.featuredImage?.node
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tags     = (node.tags?.nodes ?? []).map((t: any) => t.name)
 
   return {
@@ -112,6 +115,7 @@ function mapPost(node: any): WPPost {
 /** Fetch all published posts, newest first */
 export async function getAllPosts(): Promise<WPPost[]> {
   const data = await fetchWPAPI<{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     posts: { nodes: any[] }
   }>(`
     query AllPosts {
@@ -156,6 +160,7 @@ export async function getAllPosts(): Promise<WPPost[]> {
 /** Fetch a single post by its slug */
 export async function getPostBySlug(slug: string): Promise<WPPost | null> {
   const data = await fetchWPAPI<{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     post: any | null
   }>(`
     query PostBySlug($slug: ID!) {
